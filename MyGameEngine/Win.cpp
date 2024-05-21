@@ -40,7 +40,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
     RegisterClassEx(&wc); //クラスを登録
 
     //ウィンドウサイズ計算 ( 表示領域　横×高さ　に指定するための計算 )
-    RECT winRect = { 0, 0, 800, 600 };// { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
+    RECT winRect =  { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };//{ 0, 0, 800, 600 };//
     AdjustWindowRect(&winRect, WS_OVERLAPPEDWINDOW, FALSE);
     int winW = winRect.right - winRect.left;     //ウィンドウ幅
     int winH = winRect.bottom - winRect.top;     //ウィンドウ高さ
@@ -59,6 +59,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
         hInstance,           //インスタンス
         NULL                 //パラメータ（なし）
     );
+
   //ウィンドウを表示
     ShowWindow(hWnd, nCmdShow);
 
