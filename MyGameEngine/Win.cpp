@@ -3,7 +3,7 @@
 #include <tchar.h>
 #include"Direct3D.h"
 
-
+#include"Quad.h"
 
 //定数宣言
 const wchar_t* WIN_CLASS_NAME = L"SampleGame";  //ウィンドウクラス名
@@ -68,6 +68,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
     Direct3D::Initialize(winW, winH, hWnd);
   
   //メッセージループ（何か起きるのを待つ）
+    Quad* q;
+    q = new Quad();
+    q->Initialize();
 
 
     MSG msg;
@@ -90,6 +93,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 
             Direct3D::BeginDraw();
+            q->Draw();
 
             //描画処理
 
@@ -101,7 +105,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 
 
-
+    Direct3D::Release();
 	return 0;
 }
 
