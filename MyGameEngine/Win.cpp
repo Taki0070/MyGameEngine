@@ -2,7 +2,6 @@
 #include <Windows.h>
 #include <tchar.h>
 #include"Direct3D.h"
-
 #include"Quad.h"
 
 //定数宣言
@@ -22,9 +21,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow)
 {
-
+    HRESULT hr;
   //ウィンドウクラス（設計図）を作成
-    WNDCLASSEX wc;
+   WNDCLASSEX wc;
     wc.cbSize = sizeof(WNDCLASSEX);             //この構造体のサイズ
     wc.hInstance = hInstance;                   //インスタンスハンドル
     wc.lpszClassName = WIN_CLASS_NAME;            //ウィンドウクラス名
@@ -65,12 +64,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
    
     //Direct3D初期化
-    Direct3D::Initialize(winW, winH, hWnd);
-  
+    hr = Direct3D::Initialize(winW, winH, hWnd);
+    if (FAILED(hr))
+    {
+        return 0;
+    }
+
   //メッセージループ（何か起きるのを待つ）
-    Quad* q;
-    q = new Quad();
-    q->Initialize();
+    Quad* quad;
+    quad = new Quad();
+    quad->Initialize();
 
 
     MSG msg;
@@ -93,7 +96,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 
             Direct3D::BeginDraw();
-            q->Draw();
+            quad->Draw();
 
             //描画処理
 
@@ -104,7 +107,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
     }
 
 
-
+    SAFE_DELETE(quad);
     Direct3D::Release();
 	return 0;
 }

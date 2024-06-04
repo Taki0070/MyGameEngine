@@ -24,8 +24,10 @@ namespace Direct3D
 
 }
 //初期化
-void Direct3D::Initialize(int winW, int winH, HWND hWnd)
+HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 {
+    HRESULT hr;
+
     ///////////////////////////いろいろ準備するための設定///////////////////////////////
    //いろいろな設定項目をまとめた構造体
     DXGI_SWAP_CHAIN_DESC scDesc;
@@ -53,7 +55,7 @@ void Direct3D::Initialize(int winW, int winH, HWND hWnd)
     
     ////////////////上記設定をもとにデバイス、コンテキスト、スワップチェインを作成////////////////////////
     D3D_FEATURE_LEVEL level;
-    D3D11CreateDeviceAndSwapChain(
+   hr  = D3D11CreateDeviceAndSwapChain(
         nullptr,				// どのビデオアダプタを使用するか？既定ならばnullptrで
         D3D_DRIVER_TYPE_HARDWARE,		// ドライバのタイプを渡す。ふつうはHARDWARE
         nullptr,				// 上記をD3D_DRIVER_TYPE_SOFTWAREに設定しないかぎりnullptr
@@ -67,55 +69,21 @@ void Direct3D::Initialize(int winW, int winH, HWND hWnd)
         &level,					// 無事完成したDevice、Contextのレベルが返ってくる
         &pContext
     );				// 無事完成したContextのアドレスが返ってくる
-
-    //シェーダー準備
-    InitShader();
-  
-}
-
-//シェーダー準備
-void Direct3D::InitShader()
-{
-    // 頂点シェーダの作成（コンパイル）
-    ID3DBlob* pCompileVS = nullptr;
-    D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
-    pDevice->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &pVertexShader);
-    pCompileVS->Release();
-
-    //頂点インプットレイアウト
-    D3D11_INPUT_ELEMENT_DESC layout[] = {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
-    };
-    pDevice->CreateInputLayout(layout, 1, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout);
-    pCompileVS->Release();
-
-    // ピクセルシェーダの作成（コンパイル）
-    ID3DBlob* pCompilePS = nullptr;
-    D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
-    pDevice->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &pPixelShader);
-    pCompilePS->Release();
-
-    //ラスタライザ作成
-    D3D11_RASTERIZER_DESC rdc = {};
-    rdc.CullMode = D3D11_CULL_BACK;      //多角形の裏側は描画しない (カリング)
-    rdc.FillMode = D3D11_FILL_SOLID;    //多角形の内部を塗りつぶす
-    rdc.FrontCounterClockwise = FALSE; //反時計回りを表にするかどうか、(falseなので時計回りが表) 時計回りが表 三角形の頂点①→②→③ 裏から見たら反時計回り
-    pDevice->CreateRasterizerState(&rdc, &pRasterizerState);
-
-    //それぞれをデバイスコンテキストに [セット]
-    pContext->VSSetShader(pVertexShader, NULL, 0);	//頂点シェーダー
-    pContext->PSSetShader(pPixelShader, NULL, 0);	//ピクセルシェーダー
-    pContext->IASetInputLayout(pVertexLayout);	//頂点インプットレイアウト
-    pContext->RSSetState(pRasterizerState);		//ラスタライザー
-
+   if (FAILED(hr))
+   {
+       return hr;
+   }
     ///////////////////////////レンダーターゲットビュー作成///////////////////////////////
     //スワップチェーンからバックバッファを取得（バックバッファ ＝ レンダーターゲット）
     ID3D11Texture2D* pBackBuffer;
     pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
 
     //レンダーターゲットビューを作成
-    pDevice->CreateRenderTargetView(pBackBuffer, NULL, &pRenderTargetView);
-
+   hr =  pDevice->CreateRenderTargetView(pBackBuffer, NULL, &pRenderTargetView);
+   if (FAILED(hr))
+   {
+       return hr;
+   }
     //一時的にバックバッファを取得しただけなので解放
     pBackBuffer->Release();
 
@@ -133,6 +101,70 @@ void Direct3D::InitShader()
     pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);  // データの入力種類を指定
     pContext->OMSetRenderTargets(1, &pRenderTargetView, nullptr);            // 描画先を設定
     pContext->RSSetViewports(1, &vp);
+
+    //シェーダー準備
+    hr =  InitShader();
+    return hr;
+    
+    
+}
+
+//シェーダー準備
+HRESULT Direct3D::InitShader()
+{
+    HRESULT hr;
+
+    // 頂点シェーダの作成（コンパイル）
+    ID3DBlob* pCompileVS = nullptr;
+    D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
+    assert(pCompileVS != nullptr);
+    hr = pDevice->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &pVertexShader);
+ 
+    if (FAILED(hr))//失敗したらtrueを返してくれる (S_OK = 成功) E_FAIL失敗
+    {
+        return hr;
+    }
+
+    
+
+    //頂点インプットレイアウト
+    D3D11_INPUT_ELEMENT_DESC layout[] = {
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
+    };
+    assert(pCompileVS != nullptr);
+    pDevice->CreateInputLayout(layout, 1, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout);
+   hr = pCompileVS->Release();
+   if (FAILED(hr))//失敗したらtrueを返してくれる (S_OK = 成功) E_FAIL失敗
+   {
+       return hr;
+   }
+
+    // ピクセルシェーダの作成（コンパイル）
+    ID3DBlob* pCompilePS = nullptr;
+    D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
+    pDevice->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &pPixelShader);
+    pCompilePS->Release();
+
+    //ラスタライザ作成
+    D3D11_RASTERIZER_DESC rdc = {};
+    rdc.CullMode = D3D11_CULL_BACK;      //多角形の裏側は描画しない (カリング)
+    //rdc.FillMode = D3D11_FILL_SOLID;    //多角形の内部を塗りつぶす    rdc.FillMode = D3D11_FILL_WIREFRAME;    //多角形の内部を塗りつぶす
+    rdc.FillMode = D3D11_FILL_WIREFRAME;
+    rdc.FrontCounterClockwise = FALSE; //反時計回りを表にするかどうか、(falseなので時計回りが表) 時計回りが表 三角形の頂点①→②→③ 裏から見たら反時計回り
+    hr  = pDevice->CreateRasterizerState(&rdc, &pRasterizerState);
+    if (FAILED(hr))//失敗したらtrueを返してくれる (S_OK = 成功) E_FAIL失敗
+    {
+        return hr;
+    }
+
+    //それぞれをデバイスコンテキストに [セット]
+    pContext->VSSetShader(pVertexShader, NULL, 0);	//頂点シェーダー
+    pContext->PSSetShader(pPixelShader, NULL, 0);	//ピクセルシェーダー
+    pContext->IASetInputLayout(pVertexLayout);	//頂点インプットレイアウト
+    pContext->RSSetState(pRasterizerState);		//ラスタライザー
+
+
+    return S_OK;
 }
 
 
