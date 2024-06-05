@@ -99,18 +99,25 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
             //ƒQ[ƒ€‚Ìˆ—
             Direct3D::BeginDraw();
 
+            // 1“x‚¸‚Â‰ñ“]‚·‚é‚½‚ß‚Ì•Ï”
             static float rot = 0;
-            rot += 0.5;
-            XMMATRIX rmat = XMMatrixRotationY(XMConvertToRadians(rot));
+            rot += 0.01;
+          XMMATRIX rmat = XMMatrixRotationY(XMConvertToRadians(rot));
+
+           // XMMATRIX rmat = XMMatrixRotationY(rot);//2
+
             static float factor = 0.0;
-            factor += 0.1;
+            factor += 0.01;
             float scale = 1.5+ sin(factor);
             XMMATRIX smat = XMMatrixScaling(scale, scale, scale);
 
-      //‚±‚±‚ÉŽ–‘O‚Ì•`‰æˆ—‚ð’Ç‰Á
-            XMMATRIX tmat = XMMatrixTranslation(sin(factor), 0, 0);
+      ////‚±‚±‚ÉŽ–‘O‚Ì•`‰æˆ—‚ð’Ç‰Á
+            XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 0, 0);
+         //XMMATRIX  tmat = XMMatrixTranslation(3.0 * sin(factor), 3.0 * sin(factor),0);//2
+          XMMATRIX mat = smat *rmat ;
 
-            XMMATRIX mat = smat *rmat ;
+         //XMMATRIX mat = XMMatrixIdentity();//Identity‚Í’PˆÊs—ñ‚ÌˆÓ–¡ 2
+         // mat = tmat*rmat; //2
             quad->Draw(mat);
 
             //quad->Draw(mat);

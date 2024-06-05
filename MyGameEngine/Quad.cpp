@@ -415,5 +415,9 @@ void Quad::Draw(XMMATRIX& worldMatrix)
 void Quad::Release()
 {
 	Direct3D::pContext->Release();
-	Direct3D::pDevice->Release();
+ 	Direct3D::pDevice->Release();
+
+	//SAFE_RELEASE()
+        
+
 }
