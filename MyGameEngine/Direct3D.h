@@ -1,6 +1,7 @@
 #pragma once
 #include <d3d11.h>
 #include <assert.h>
+#include<DirectXMath.h>
 
 
 //ƒŠƒ“ƒJ

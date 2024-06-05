@@ -130,10 +130,12 @@ HRESULT Direct3D::InitShader()
     //頂点インプットレイアウト
     D3D11_INPUT_ELEMENT_DESC layout[] = {
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::XMVECTOR) , D3D11_INPUT_PER_VERTEX_DATA, 0 },//UV座標
     };
     assert(pCompileVS != nullptr);
-    pDevice->CreateInputLayout(layout, 1, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout);
-   hr = pCompileVS->Release();
+    hr = pDevice->CreateInputLayout(layout, 2, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout);//要素数 2
+
+   pCompileVS->Release();
    if (FAILED(hr))//失敗したらtrueを返してくれる (S_OK = 成功) E_FAIL失敗
    {
        return hr;

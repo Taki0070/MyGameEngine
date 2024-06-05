@@ -100,23 +100,23 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
             Direct3D::BeginDraw();
 
             // 1度ずつ回転するための変数
-            static float rot = 0;
+           /* static float rot = 0;
             rot += 0.01;
-          XMMATRIX rmat = XMMatrixRotationY(XMConvertToRadians(rot));
+          XMMATRIX rmat = XMMatrixRotationY(XMConvertToRadians(rot));*/
 
            // XMMATRIX rmat = XMMatrixRotationY(rot);//2
 
-            static float factor = 0.0;
+            /*static float factor = 0.0;
             factor += 0.01;
             float scale = 1.5+ sin(factor);
-            XMMATRIX smat = XMMatrixScaling(scale, scale, scale);
+            XMMATRIX smat = XMMatrixScaling(scale, scale, scale);*/
 
       ////ここに事前の描画処理を追加
-            XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 0, 0);
+          //  XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 0, 0);
          //XMMATRIX  tmat = XMMatrixTranslation(3.0 * sin(factor), 3.0 * sin(factor),0);//2
-          XMMATRIX mat = smat *rmat ;
+          //XMMATRIX mat = smat *rmat ;
 
-         //XMMATRIX mat = XMMatrixIdentity();//Identityは単位行列の意味 2
+         XMMATRIX mat = XMMatrixIdentity();//Identityは単位行列の意味 2
          // mat = tmat*rmat; //2
             quad->Draw(mat);
 
