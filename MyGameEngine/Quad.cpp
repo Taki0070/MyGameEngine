@@ -301,13 +301,9 @@ HRESULT Quad::Initialize()
 		//XMVectorSet(0.0f, -2.0f, 0.0f, 0.0f),	// 四角形の頂点
 
 		//XMVectorSet(-1.0f,  0.0f, 1.0f, 0.0f),//四角錐の頂点
-
 		//XMVectorSet(1.0f,  0.0f, 1.0f, 0.0f),//四角錐の頂点
-
 		//XMVectorSet(1.0f, 0.0f, -1.0f, 0.0f),//四角錐の頂点
-
 		//XMVectorSet(-1.0f, 0.0f, -1.0f, 0.0f),//四角錐の頂点
-
 		//XMVectorSet(0.0f, 1.3, 0.0f, 0.0f),//四角錐の頂点
 	};
 
@@ -330,8 +326,8 @@ HRESULT Quad::Initialize()
 	}
 	Direct3D::pDevice->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_);
 	//インデックス情報
-	int index[] = { 0,2,3, 0,1,2, 4,2,3, 0,4,3, 1,4,0, 2,4,1 };
-	//int index[] = { 0,2,3, 0,1,2 ,3,2,4 };
+	//int index[] = { 0,2,3, 0,1,2, 4,2,3, 0,4,3, 1,4,0, 2,4,1 };
+	int index[] = { 0,2,3, 0,1,2 ,3,2,4 };
 
 
 	// インデックスバッファを生成する
@@ -376,22 +372,25 @@ HRESULT Quad::Initialize()
 
 
 
-void Quad::Draw()
+void Quad::Draw(XMMATRIX& worldMatrix)
 {
 	//コンスタントバッファに渡す情報
-	XMVECTOR position = { 0, 3, -10, 0 };	//カメラの位置
-	XMVECTOR target = { 0, 0, 0, 0 };	//カメラの焦点
-	XMMATRIX view = XMMatrixLookAtLH(position, target, XMVectorSet(0, 1, 0, 0));	//ビュー行列
-	XMMATRIX proj = XMMatrixPerspectiveFovLH(XM_PIDIV4, 800.0f / 600.0f, 0.1f, 100.0f);//射影行列
-	                                            //アスペクト比（幅÷高さ）カメラ近0.1f から　100fまで
+	//XMVECTOR position = { 0, 3, -10, 0 };	//カメラの位置
+	//XMVECTOR target = { 0, 0, 0, 0 };	//カメラの焦点
+	//XMMATRIX view = XMMatrixLookAtLH(position, target, XMVectorSet(0, 1, 0, 0));	//ビュー行列
+	//XMMATRIX proj = XMMatrixPerspectiveFovLH(XM_PIDIV4, 800.0f / 600.0f, 0.1f, 100.0f);//射影行列
+	                                       //アスペクト比（幅÷高さ）カメラ近0.1f から　100fまで
+	/*D3D11_MAPPED_SUBRESOURCE pdata;
 	CONSTANT_BUFFER cb;
-	cb.matWVP = XMMatrixTranspose(view * proj);
+	cb.matWVP = XMMatrixTranspose(Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
+	Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);*/
 
+	CONSTANT_BUFFER cb;
+	cb.matWVP = XMMatrixTranspose(worldMatrix * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
+	
 	D3D11_MAPPED_SUBRESOURCE pdata;
 	Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
-	//CONSTANT_BUFFER cb;
-	//cb.matWVP = XMMatrixTranspose(Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
-	 memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
+    memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
 	Direct3D::pContext->Unmap(pConstantBuffer_, 0);	//再開
 
 

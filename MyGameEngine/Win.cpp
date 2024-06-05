@@ -3,6 +3,7 @@
 #include <tchar.h>
 #include"Direct3D.h"
 #include"Quad.h"
+#include"Camera.h"
 
 //定数宣言
 const wchar_t* WIN_CLASS_NAME = L"SampleGame";  //ウィンドウクラス名
@@ -69,12 +70,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
     {
         return 0;
     }
-
+   // Camera::Initailize({5,10,-1}, {0,0,0});//初期化
+    Camera::Initialize();//初期化
   //メッセージループ（何か起きるのを待つ）
     Quad* quad;
     quad = new Quad();
     quad->Initialize();
 
+    
 
     MSG msg;
     ZeroMemory(&msg, sizeof(msg));
@@ -91,13 +94,27 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
         //メッセージなし
         else
         {
-             // Sleep(1);
+            //カメラ更新
+            Camera::Update();
             //ゲームの処理
-
-
             Direct3D::BeginDraw();
-            quad->Draw();
 
+            static float rot = 0;
+            rot += 0.5;
+            XMMATRIX rmat = XMMatrixRotationY(XMConvertToRadians(rot));
+            static float factor = 0.0;
+            factor += 0.1;
+            float scale = 1.5+ sin(factor);
+            XMMATRIX smat = XMMatrixScaling(scale, scale, scale);
+
+      //ここに事前の描画処理を追加
+            XMMATRIX tmat = XMMatrixTranslation(sin(factor), 0, 0);
+
+            XMMATRIX mat = smat *rmat ;
+            quad->Draw(mat);
+
+            //quad->Draw(mat);
+            
             //描画処理
 
             Direct3D::EndDraw();

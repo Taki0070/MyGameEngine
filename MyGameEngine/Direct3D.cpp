@@ -147,9 +147,11 @@ HRESULT Direct3D::InitShader()
 
     //ラスタライザ作成
     D3D11_RASTERIZER_DESC rdc = {};
+    //rdc.CullMode = D3D11_CULL_NONE;
     rdc.CullMode = D3D11_CULL_BACK;      //多角形の裏側は描画しない (カリング)
-    //rdc.FillMode = D3D11_FILL_SOLID;    //多角形の内部を塗りつぶす    rdc.FillMode = D3D11_FILL_WIREFRAME;    //多角形の内部を塗りつぶす
-    rdc.FillMode = D3D11_FILL_WIREFRAME;
+    rdc.FillMode = D3D11_FILL_SOLID;    //多角形の内部を塗りつぶす    rdc.FillMode = D3D11_FILL_WIREFRAME;    //多角形の内部を塗りつぶす
+    //rdc.FillMode = D3D11_FILL_WIREFRAME;
+
     rdc.FrontCounterClockwise = FALSE; //反時計回りを表にするかどうか、(falseなので時計回りが表) 時計回りが表 三角形の頂点①→②→③ 裏から見たら反時計回り
     hr  = pDevice->CreateRasterizerState(&rdc, &pRasterizerState);
     if (FAILED(hr))//失敗したらtrueを返してくれる (S_OK = 成功) E_FAIL失敗
