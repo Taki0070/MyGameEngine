@@ -12,6 +12,7 @@ namespace Camera
 	//初期化（プロジェクション行列作成）
 	void Initialize();
 	void Initialize(XMVECTOR _position, XMVECTOR _target);
+
 	//更新（ビュー行列作成）
 	void Update();
 
@@ -27,4 +28,3 @@ namespace Camera
 	//プロジェクション行列を取得
 	XMMATRIX GetProjectionMatrix();
 };
-
