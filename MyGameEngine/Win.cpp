@@ -68,7 +68,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		MessageBox(NULL, L"DirectXの初期化に失敗", NULL, MB_OK);
 		return 0;
 	}
-
+	
 
 	//Camera::Initialize({5,10,-10}, {0,0,0});
 	Camera::Initialize();
@@ -115,14 +115,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			factor += 0.001;
 			////float scale = 1.5 + sin(factor);
 			////XMMATRIX smat = XMMatrixScaling(scale, scale, scale);
-			//////ここに自前の描画処理を追加していく
+			//////ここに自前の描画処理を追加
 			////XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 0, 0);
 			XMMATRIX tmat = XMMatrixTranslation(3.0 * cos(factor), 3.0 * sin(factor), 0);
 			//XMMATRIX mat = smat * rmat * tmat;
-			//単位行列は、数字の１と同じ
-			XMMATRIX mat = XMMatrixIdentity();//Identityは単位行列って意味
+			//単位行列は、数字の１と同
+			XMMATRIX mat = XMMatrixIdentity();//Identityは単位行列
 			mat = rmat * tmat;
 			q->Draw(mat);
+
 
 			//描画処理
 			Direct3D::EndDraw();

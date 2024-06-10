@@ -83,7 +83,7 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 		return hr;
 	}
 
-	//一時的にバックバッファを取得しただけなので解放
+	//一時的にバックバッファを取得しただけなの解放
 	pBackBuffer->Release();
 
 
@@ -159,7 +159,7 @@ HRESULT Direct3D::InitShader()
 	D3D11_RASTERIZER_DESC rdc = {};
 	rdc.CullMode = D3D11_CULL_NONE;  //多角形の裏側は描画しない（カリング）
 	rdc.FillMode = D3D11_FILL_SOLID; //多角形の内部を塗りつぶす
-	rdc.FrontCounterClockwise = FALSE; //反時計回りを表にするかどうか（がfalseなので時計回りが表）
+	rdc.FrontCounterClockwise = FALSE; //反時計回りを表にするか（がfalseなので時計回りが表）
 	hr = pDevice->CreateRasterizerState(&rdc, &pRasterizerState);
 	if (FAILED(hr))
 	{
@@ -180,7 +180,6 @@ HRESULT Direct3D::InitShader()
 void Direct3D::BeginDraw()
 {
 	//背景の色
-	//float clearColor[4] = { 255 / 255.0f, 250 / 255.0f, 205 / 255.0f, 1.0f };//R,G,B,A
 	float clearColor[4] = { 75 / 255.0f,106 / 255.0f, 226 / 255.0f, 1.0f };//R,G,B,A
 
 	//画面をクリア

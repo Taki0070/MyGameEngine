@@ -9,6 +9,7 @@ using namespace DirectX;
 Texture::Texture()
 	:pSampler_(nullptr), pSRV_(nullptr)
 {
+
 }
 
 HRESULT Texture::Load(string fileName)
@@ -19,16 +20,17 @@ HRESULT Texture::Load(string fileName)
 
 	HRESULT hr = S_OK;
 
-	//実際に読んでゆくぅ　　　　　 
+	//実際に読む
 	std::wstring wstr(fileName.begin(), fileName.end()); //string => wchar_t* の変換　LPCWSTR == cont wchar_t*
 	hr = LoadFromWICFile(wstr.c_str(), WIC_FLAGS::WIC_FLAGS_NONE, &metadata, image);
+
 
 	if (FAILED(hr))
 	{
 		return S_FALSE;
 	}
 
-	//サンプラーの設定をしてゆくぅ
+	//サンプラーの設定
 	D3D11_SAMPLER_DESC  SamDesc;
 	ZeroMemory(&SamDesc, sizeof(D3D11_SAMPLER_DESC));
 	SamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;

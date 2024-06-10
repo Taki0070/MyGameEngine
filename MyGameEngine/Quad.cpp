@@ -12,6 +12,7 @@ Quad::~Quad()
 
 HRESULT Quad::Initialize()
 {
+
 	HRESULT hr;
 	// 頂点情報
 	VERTEX vertices[] =
@@ -20,11 +21,36 @@ HRESULT Quad::Initialize()
 		{ XMVectorSet(1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0, 0.0, 0.0, 0.0)},	// 四角形の頂点（右上）, UV
 		{ XMVectorSet(1.0f, -1.0f, 0.0f, 0.0f),  XMVectorSet(1.0, 1.0, 0.0, 0.0)},	// 四角形の頂点（右下）, UV
 		{ XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0, 1.0, 0.0, 0.0)}	// 四角形の頂点（左下）, UV
-	};
+
+		//{XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f),	XMVectorSet(0.0, 0.0, 0.0, 0.0) },// 四角形の頂点（左上）
+		//{XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f), XMVectorSet(1.0, 0.0, 0.0, 0.0)},// 四角形の頂点（右上）
+		//{XMVectorSet(1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(1.0, 1.0, 0.0, 0.0)},// 四角形の頂点（右下）
+		//{XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0, 1.0, 0.0, 0.0)},// 四角形の頂点（左下）	
+
+		//{XMVectorSet(0.0f, -2.0f, 0.0f, 0.0f), XMVectorSet(0.0, 1.0, 0.0, 0.0)}	// 四角形の頂点
+
+
+		//XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f),// 四角形の頂点（左上）
+		//XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f), // 四角形の頂点（右上）
+		//XMVectorSet(1.0f, -1.0f, 0.0f, 0.0f),// 四角形の頂点（右下）
+		//XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f),// 四角形の頂点（左下）	
+		//
+		//XMVectorSet(0.0f, -2.0f, 0.0f, 0.0f),	// 四角形の頂点
+
+	}; //36点　頂点kana
+
+	//VERTEX ah[] =
+	//{
+	//	{ XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0, 0.0, 0.0, 0.0)},	// 四角形の頂点（左上）, UV
+	//	{ XMVectorSet(1.0f,  4.0f, 0.0f, 0.0f), XMVectorSet(1.0, 0.0, 0.0, 0.0)},	// 四角形の頂点（右上）, UV
+	//	{ XMVectorSet(1.0f, -10.0f, 0.0f, 0.0f),  XMVectorSet(1.0, 1.0, 0.0, 0.0)},	// 四角形の頂点（右下）, UV
+	//	{ XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0, 1.0, 0.0, 0.0)}	// 四角形の頂点（左下）, UV
+	//};
 
 	//インデックス情報
 	int index[] = { 0,2,3, 0,1,2 };
-
+	//int index[] = { 0,2,3, 0,1,2, 4,2,3, 0,4,3, 1,4,0, 2,4,1 };
+	
 	// 頂点データ用バッファの設定
 	D3D11_BUFFER_DESC bd_vertex;
 	bd_vertex.ByteWidth = sizeof(vertices);
@@ -122,7 +148,7 @@ void Quad::Draw()
 	Direct3D::pContext->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
 	Direct3D::pContext->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
 
-	Direct3D::pContext->DrawIndexed(6, 0, 0);
+	Direct3D::pContext->DrawIndexed(18, 0, 0);//元6
 }
 
 void Quad::Draw(XMMATRIX& worldMatrix)
@@ -157,7 +183,7 @@ void Quad::Draw(XMMATRIX& worldMatrix)
 	ID3D11ShaderResourceView* pSRV = pTexture_->GetSRV();
 	Direct3D::pContext->PSSetShaderResources(0, 1, &pSRV);
 
-	Direct3D::pContext->DrawIndexed(6, 0, 0);
+	Direct3D::pContext->DrawIndexed(18, 0, 0);
 }
 
 void Quad::Release()
