@@ -68,7 +68,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		MessageBox(NULL, L"DirectX‚Ì‰Šú‰»‚ÉŽ¸”s", NULL, MB_OK);
 		return 0;
 	}
-	
+
 
 	//Camera::Initialize({5,10,-10}, {0,0,0});
 	Camera::Initialize();
@@ -105,7 +105,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			//1“x‚¸‚Â‰ñ“]‚·‚é‚½‚ß‚Ì•Ï”
 			static float rot = 0;
-			rot += 0.01;
+			rot += 0.001;
 			//radian -> digree XMConvertToRadians
 			//digree -> radian XMConvertToDegrees
 

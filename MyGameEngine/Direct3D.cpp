@@ -181,7 +181,7 @@ void Direct3D::BeginDraw()
 {
 	//”wŒi‚ÌF
 	float clearColor[4] = { 75 / 255.0f,106 / 255.0f, 226 / 255.0f, 1.0f };//R,G,B,A
-
+	//float clearColor[4] = { 0.0f, 1.0f, 1.0f, 1.0f };
 	//‰æ–Ê‚ðƒNƒŠƒA
 	pContext->ClearRenderTargetView(pRenderTargetView, clearColor);
 }
