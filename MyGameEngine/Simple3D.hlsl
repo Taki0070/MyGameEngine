@@ -42,9 +42,8 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
     
     normal = mul(normal, matW);
     normal = normalize(normal);
-    outData.cos_alpha = dot(normal, light);
-    
-  //  outData.cos_alpha = clamp(dot(normal, light),0,1);//Å©
+        
+    outData.cos_alpha = clamp(dot(normal, light),0,1);//clamp ÇÕå≈íË,0à»â∫Ç©1à»è„Ç©
     
     
 	//Ç‹Ç∆ÇﬂÇƒèoóÕ
