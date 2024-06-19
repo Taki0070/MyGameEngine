@@ -4,6 +4,7 @@
 
 #include "Quad.h"
 #include "Camera.h"
+#include "Dice.h"
 
 //リンカ
 #pragma comment(lib, "d3d11.lib")
@@ -73,9 +74,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//Camera::Initialize({5,10,-10}, {0,0,0});
 	Camera::Initialize();
 
-	Quad* q;
-	q = new Quad();
-	hr = q->Initialize();
+	//Quad* q;
+	//q = new Quad();
+	Dice* d;
+	d = new Dice();
+
+	//hr = q->Initialize();
+	hr = d->Initialize();
+
 	if (FAILED(hr))
 	{
 		MessageBox(NULL, L"Quadの初期化に失敗", NULL, MB_OK);
@@ -109,7 +115,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//radian -> digree XMConvertToRadians
 			//digree -> radian XMConvertToDegrees
 
-			XMMATRIX rmat = XMMatrixRotationY(rot);
+			XMMATRIX rmat = XMMatrixRotationX(rot);
 
 			static float factor = 0.0;
 			factor += 0.001;
@@ -119,11 +125,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			////XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 0, 0);
 			XMMATRIX tmat = XMMatrixTranslation(3.0 * cos(factor), 3.0 * sin(factor), 0);
 			//XMMATRIX mat = smat * rmat * tmat;
-			//単位行列は、数字の１と同
-			XMMATRIX mat = XMMatrixIdentity();//Identityは単位行列
-			mat = rmat * tmat;
-			q->Draw(mat);
-
+			//単位行列は、数字の１と同じ
+			XMMATRIX mat = XMMatrixIdentity();//Identityは単位行列って意味
+			mat = rmat;
+			//q->Draw(mat);
+			d->Draw(mat);
 
 			//描画処理
 			Direct3D::EndDraw();
@@ -131,13 +137,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 	}
 
-	SAFE_DELETE(q);
+	//SAFE_DELETE(q);
 	Direct3D::Release();
 
 	return 0;
 }
 
-//ウィンドウプロシージャ（何かあった時によばれる関数）
+//ウィンドウプロシージャ 何かあった時によばれる
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
