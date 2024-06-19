@@ -1,7 +1,6 @@
 //インクルード
 #include <Windows.h>
 #include "Direct3D.h"
-
 #include "Quad.h"
 #include "Camera.h"
 #include "Dice.h"
