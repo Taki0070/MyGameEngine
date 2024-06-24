@@ -52,7 +52,7 @@ private:
 
 	//---Draw関数から呼ばれる関数---
 	void PassDataToCB(DirectX::XMMATRIX& worldMatrix);//コンストバッファ各種
-	void SetBufferToPipeline();//
+	void SetBufferToPipeline();//各バッファをパオるライン
 };
 
 

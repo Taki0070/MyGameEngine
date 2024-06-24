@@ -1,9 +1,10 @@
 //インクルード
 #include <Windows.h>
 #include "Direct3D.h"
-#include "Quad.h"
+//#include "Quad.h"
 #include "Camera.h"
-#include "Dice.h"
+//#include "Dice.h"
+#include"Sprite.h"
 
 //リンカ
 #pragma comment(lib, "d3d11.lib")
@@ -11,7 +12,7 @@
 
 	//定数宣言
 const wchar_t* WIN_CLASS_NAME = L"SampleGame";  //ウィンドウクラス名
-const wchar_t* APP_NAME = L"サンプルゲーム"; //アプリケーション名
+const wchar_t* APP_NAME = L"サンプル"; //アプリケーション名
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 
@@ -75,11 +76,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 	//Quad* q;
 	//q = new Quad();
-	Dice* d;
-	d = new Dice();
+	/*Dice* d;
+	d = new Dice();*/
 
 	//hr = q->Initialize();
-	hr = d->Initialize();
+	//hr = d->Initialize();
+
+	Sprite* pSprite;
+	pSprite = new Sprite();
+	hr = pSprite->Initialize();
 
 	if (FAILED(hr))
 	{
@@ -108,27 +113,29 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//ゲームの処理
 			Direct3D::BeginDraw();
 
-			//1度ずつ回転するための変数
-			static float rot = 0;
-			rot += 0.001;
-			//radian -> digree XMConvertToRadians
-			//digree -> radian XMConvertToDegrees
+			XMMATRIX mat = XMMatrixIdentity();
+			pSprite->Draw(mat);
 
-			XMMATRIX rmat = XMMatrixRotationX(rot);
+			/*static float rot = 0;
+			rot += 0.001;*/
+			////radian -> digree XMConvertToRadians
+			////digree -> radian XMConvertToDegrees
 
-			static float factor = 0.0;
-			factor += 0.001;
-			////float scale = 1.5 + sin(factor);
-			////XMMATRIX smat = XMMatrixScaling(scale, scale, scale);
-			//////ここに自前の描画処理を追加
-			////XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 0, 0);
-			XMMATRIX tmat = XMMatrixTranslation(3.0 * cos(factor), 3.0 * sin(factor), 0);
-			//XMMATRIX mat = smat * rmat * tmat;
-			//単位行列は、数字の１と同じ
-			XMMATRIX mat = XMMatrixIdentity();//Identityは単位行列って意味
-			mat = rmat;
-			//q->Draw(mat);
-			d->Draw(mat);
+			//XMMATRIX rmat = XMMatrixRotationX(rot);
+
+			//static float factor = 0.0;
+			//factor += 0.001;
+			//////float scale = 1.5 + sin(factor);
+			//////XMMATRIX smat = XMMatrixScaling(scale, scale, scale);
+			////////ここに自前の描画処理を追加
+			//////XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 0, 0);
+			//XMMATRIX tmat = XMMatrixTranslation(3.0 * cos(factor), 3.0 * sin(factor), 0);
+			////XMMATRIX mat = smat * rmat * tmat;
+			////単位行列は、数字の１と同じ
+			//XMMATRIX mat = XMMatrixIdentity();//Identityは単位行列って意味
+			//mat = rmat;
+			////q->Draw(mat);
+			//d->Draw(mat);
 
 			//描画処理
 			Direct3D::EndDraw();
