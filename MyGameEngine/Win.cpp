@@ -113,7 +113,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//ゲームの処理
 			Direct3D::BeginDraw();
 
-			XMMATRIX mat = XMMatrixIdentity();
+			//XMMATRIX mat = XMMatrixIdentity();//xy 1/2
+			XMMATRIX mat = XMMatrixScaling(1 / 2.0f, 1 / 2.0f, 1.0f);//スケール変換
 			pSprite->Draw(mat);
 
 			/*static float rot = 0;
