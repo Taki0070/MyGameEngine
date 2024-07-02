@@ -1,5 +1,6 @@
 #pragma once
 #include "Quad.h"
+#include"Transform.h"
 class Dice :
 	public Quad
 {
@@ -8,5 +9,6 @@ public:
 	Dice();
 	~Dice();
 	virtual HRESULT Initialize();
-	virtual void Draw(XMMATRIX& worldMatrix);
+	virtual void Draw(Transform& transform);
+	//virtual void Draw(XMMATRIX& worldMatrix);
 };

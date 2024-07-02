@@ -1,5 +1,6 @@
 #include "Sprite.h"
 #include "Camera.h"
+#include<filesystem>
 
 Sprite::Sprite()
 	:pTexture_(nullptr), pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),
@@ -13,7 +14,7 @@ Sprite::~Sprite()
 	Release();
 }
 
-HRESULT Sprite::Initialize()
+HRESULT Sprite::Load(std::string fileName)
 {
 	//頂点情報
 	InitVertexData();//データ用意
@@ -34,7 +35,7 @@ HRESULT Sprite::Initialize()
 		return E_FAIL;
 	}
 	
-	if (FAILED(LoadTexture()))//ロード
+	if (FAILED(LoadTexture(fileName)))//ロード
 	{
 		return E_FAIL;
 	}
@@ -42,17 +43,30 @@ HRESULT Sprite::Initialize()
 	return S_OK;
 }
 
-
-
-void Sprite::Draw(XMMATRIX& worldMatrix)
+void Sprite::Draw(Transform& transform)
 {
-
-	PassDataToCB(worldMatrix);
+	Direct3D::SetShader(SHADER_TYPE::SHADER_2D);
 	//
+	transform.Calclation();
+
+	//コンスタントバッファに情報を渡す
+	PassDataToCB(transform.GetWorldMatrix());
+	//頂点バッファ、インデックスバッファ、コンストバッファを
 	SetBufferToPipeline();
 	//描画
-	Direct3D::pContext->DrawIndexed(36, 0, 0);
+	Direct3D::pContext->DrawIndexed(indexNum_, 0, 0);
+
 }
+
+//void Sprite::Draw(XMMATRIX& worldMatrix)
+//{
+//
+//	PassDataToCB(worldMatrix);
+//	//
+//	SetBufferToPipeline();
+//	//描画
+//	Direct3D::pContext->DrawIndexed(36, 0, 0);
+//}
 
 void Sprite::Release()
 {
@@ -162,12 +176,15 @@ HRESULT Sprite::CreateConstantBuffer()
 	}
 }
 
-HRESULT Sprite::LoadTexture()
+HRESULT Sprite::LoadTexture(std::string fileName)
 {
+	namespace fs = std::filesystem;
+
 	pTexture_ = new Texture;
+	assert(fs::is_regular_file(fileName));
 
 	HRESULT hr;
-	hr = pTexture_->Load("Asset\\Dice.png");
+	hr = pTexture_->Load(fileName);
 	if (FAILED(hr))
 	{
 		MessageBox(NULL, L"テクスチャの作成に失敗しました", L"エラー", MB_OK);
@@ -176,7 +193,7 @@ HRESULT Sprite::LoadTexture()
 	return S_OK;
 }
 
-void Sprite::PassDataToCB(DirectX::XMMATRIX& worldMatrix)
+void Sprite::PassDataToCB(DirectX::XMMATRIX worldMatrix)
 {
 	CONSTANT_BUFFER cb;
 	cb.matW = XMMatrixTranspose(worldMatrix); //MATRIXの掛け算のやり方がDixと違うので転置をとる

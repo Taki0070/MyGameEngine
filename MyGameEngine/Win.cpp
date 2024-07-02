@@ -5,6 +5,8 @@
 #include "Camera.h"
 //#include "Dice.h"
 #include"Sprite.h"
+#include"Transform.h"
+
 
 //リンカ
 #pragma comment(lib, "d3d11.lib")
@@ -81,10 +83,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 	//hr = q->Initialize();
 	//hr = d->Initialize();
+	//std::Sprite textureData("Asser")
 
+	std::string textureDate("Asserts\\dice.png");
 	Sprite* pSprite;
 	pSprite = new Sprite();
-	hr = pSprite->Initialize();
+	hr = pSprite->Load(textureDate);
 
 	if (FAILED(hr))
 	{
@@ -112,10 +116,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			//ゲームの処理
 			Direct3D::BeginDraw();
-
 			//XMMATRIX mat = XMMatrixIdentity();//xy 1/2
-			XMMATRIX mat = XMMatrixScaling(1 / 2.0f, 1 / 2.0f, 1.0f);//スケール変換
-			pSprite->Draw(mat);
+			//XMMATRIX mat = XMMatrixScaling(1 / 2.0f, 1 / 2.0f, 1.0f);//スケール変換
+			
+			Transform trs;
+			trs.rotate_.z = 45;
+			trs.position_.x = trs.position_.x + 0.1f;
+			
+			
+			pSprite->Draw(trs);
+
+			//pSprite->Draw(mat);
 
 			/*static float rot = 0;
 			rot += 0.001;*/

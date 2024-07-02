@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 #include "Texture.h"
 #include"vector"
+#include"Transform.h"
 using std::vector;
 using namespace DirectX;
 
@@ -36,7 +37,8 @@ class Sprite
 public:
 	Sprite();//コンスト
 	~Sprite();//デススト
-	HRESULT Initialize();//初期化用　コンストラクタできない奴はこっちで初期化
+	HRESULT Load(std::string fileName);//初期化用　コンストラクタできない奴はこっちで初期化
+	void Draw(Transform& transform);
 	void Draw(XMMATRIX& worldMatrix);//描画関数
 	void Release();//解放
 private:
@@ -48,10 +50,10 @@ private:
 	HRESULT CreateIndexBuffer();//インデックスバッファー作成
 
 	HRESULT CreateConstantBuffer();//コンストバッファー作成
-	HRESULT LoadTexture();//テクスチャロード
+	HRESULT LoadTexture(std::string fileName);//テクスチャロード
 
 	//---Draw関数から呼ばれる関数---
-	void PassDataToCB(DirectX::XMMATRIX& worldMatrix);//コンストバッファ各種
+	void PassDataToCB(DirectX::XMMATRIX worldMatrix);//コンストバッファ各種
 	void SetBufferToPipeline();//各バッファをパオるライン
 };
 

@@ -123,11 +123,14 @@ HRESULT Dice::Initialize()
 	return S_OK;
 }
 
-void Dice::Draw(XMMATRIX& worldMatrix)
+void Dice::Draw(Transform& transform)
 {
+	Direct3D::SetShader(SHADER_TYPE::SHADER_3D);
+
+	transform.Calclation();
 	CONSTANT_BUFFER cb;
-	cb.matWVP = XMMatrixTranspose(worldMatrix * Camera::GetViewMatrix() * Camera::GetProjectionMatrix()); //view*projをカメラからとってくる
-	cb.matW = XMMatrixTranspose(worldMatrix);
+	cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix()); //view*projをカメラからとってくる
+	cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());
 
 	D3D11_MAPPED_SUBRESOURCE pdata;
 	Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
