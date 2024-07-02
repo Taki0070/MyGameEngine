@@ -118,7 +118,7 @@ HRESULT Dice::Initialize()
 	}
 
 	pTexture_ = new Texture;
-	pTexture_->Load("Asset\\dice.png");
+	pTexture_->Load("Assets\\dice.png");
 
 	return S_OK;
 }

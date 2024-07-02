@@ -39,7 +39,7 @@ public:
 	~Sprite();//デススト
 	HRESULT Load(std::string fileName);//初期化用　コンストラクタできない奴はこっちで初期化
 	void Draw(Transform& transform);
-	void Draw(XMMATRIX& worldMatrix);//描画関数
+	//void Draw(XMMATRIX& worldMatrix);//描画関数
 	void Release();//解放
 private:
 	//--- Initializeから呼ばれる
