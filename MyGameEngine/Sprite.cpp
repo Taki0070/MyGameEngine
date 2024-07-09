@@ -46,8 +46,8 @@ HRESULT Sprite::Load(std::string fileName)
 void Sprite::Draw(Transform& transform)
 {
 	Direct3D::SetShader(SHADER_TYPE::SHADER_2D);
-	//
-	transform.Calclation();
+	//ワールド計算
+	transform.Calculation();
 
 	//コンスタントバッファに情報を渡す
 	PassDataToCB(transform.GetWorldMatrix());

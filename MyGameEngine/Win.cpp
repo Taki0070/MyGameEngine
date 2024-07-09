@@ -1,10 +1,11 @@
 //インクルード
 #include <Windows.h>
 #include "Direct3D.h"
-//#include "Quad.h"
+
+#include "Quad.h"
 #include "Camera.h"
 //#include "Dice.h"
-#include"Sprite.h"
+//#include"Sprite.h"
 #include"Transform.h"
 
 
@@ -76,23 +77,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//Camera::Initialize({5,10,-10}, {0,0,0});
 	Camera::Initialize();
 
-	//Quad* q;
-	//q = new Quad();
+	Quad* q = new Quad();
+
 	/*Dice* d;
 	d = new Dice();*/
 
-	//hr = q->Initialize();
+	hr = q->Initialize();
 	//hr = d->Initialize();
-	//std::Sprite textureData("Asser")
-
-	std::string textureDate("Asserts\\dice.png");
+	 
+	/*std::string textureDate("Asserts\\dice.png");
 	Sprite* pSprite;
 	pSprite = new Sprite();
-	hr = pSprite->Load(textureDate);
+	hr = pSprite->Load(textureDate);*/
 
 	if (FAILED(hr))
 	{
-		MessageBox(NULL, L"Quadの初期化に失敗", NULL, MB_OK);
+		MessageBox(NULL, L"初期化に失敗", NULL, MB_OK);
 		return 0;
 	}
 
@@ -120,11 +120,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//XMMATRIX mat = XMMatrixScaling(1 / 2.0f, 1 / 2.0f, 1.0f);//スケール変換
 			
 			Transform trs;
-			trs.rotate_.z = 45;
-			trs.position_.x = trs.position_.x + 0.1f;
+			/*trs.rotate_.z = 45;
+			trs.position_.x = trs.position_.x + 0.1f;*/
 			
-			
-			pSprite->Draw(trs);
+		q->Draw(trs);
+
+			//pSprite->Draw(trs);
 
 			//pSprite->Draw(mat);
 

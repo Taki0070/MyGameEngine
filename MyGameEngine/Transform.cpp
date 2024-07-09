@@ -13,7 +13,7 @@ Transform::~Transform()
 {
 }
 
-void Transform::Calclation()
+void Transform::Calculation()
 {
     matTranslate_ = XMMatrixTranslation(position_.x, position_.y, position_.z);
 
@@ -28,4 +28,11 @@ void Transform::Calclation()
 XMMATRIX Transform::GetWorldMatrix()
 {
     return matScale_ * matRotate_ * matTranslate_;
+}
+
+XMMATRIX Transform::GetNormalMatrix()
+{
+
+    //平行移動は無視　回転がかける、スケールは元に戻す
+   return(matRotate_ * XMMatrixInverse(nullptr, matScale_));
 }

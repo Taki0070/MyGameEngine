@@ -6,9 +6,12 @@ class Dice :
 {
 
 public:
-	Dice();
+	Dice() :Quad() {};
 	~Dice();
-	virtual HRESULT Initialize();
-	virtual void Draw(Transform& transform);
+	//virtual HRESULT Initialize();
+	//virtual void Draw(Transform& transform);
+	void InitVertexData()override;
+	void InitIndexData()override;
+
 	//virtual void Draw(XMMATRIX& worldMatrix);
 };

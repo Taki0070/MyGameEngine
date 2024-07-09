@@ -21,8 +21,9 @@ public:
 	~Transform();
 
 	//各行列の計算
-	void Calclation();
+	void Calculation();
 
 	//ワールド行列を取得
 	XMMATRIX GetWorldMatrix();
+	XMMATRIX GetNormalMatrix();
 };
