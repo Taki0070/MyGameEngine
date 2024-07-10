@@ -12,8 +12,11 @@
 #pragma comment(lib, "LibXml2-MD.lib")
 #pragma comment(lib, "zlib-MD.lib")
 
+using namespace DirectX;
+
 class FBX
 {
+	
 
 	//コンスタントバッファー:　アプリ側から、シェーダーに毎フレーム渡したい情報
 	struct CONSTANT_BUFFER
@@ -30,6 +33,11 @@ class FBX
 		XMVECTOR normal;*/ //ノーマル追加（法線ベクトル）
 	};
 
+	int vertexNum_;
+	std::vector<VERTEX>vertices_;
+	int indexNum_;
+	std::vector<int>index_;
+
 
 	ID3D11Buffer* pVertexBuffer_;//頂点バッファー用メモリ
 	ID3D11Buffer* pIndexBuffer_;//インデックスバッファ用メモリ
@@ -39,9 +47,9 @@ class FBX
 	int polygonCount_;	//ポリゴン数
 
 
-	void InitVertex(fbxsdk::FbxMesh* mesh);
-	void InitIndex(fbxsdk::FbxMesh* mesh);
-	void InitConstantBuffer();
+	HRESULT InitVertex(fbxsdk::FbxMesh* mesh);
+	HRESULT InitIndex(fbxsdk::FbxMesh* mesh);
+	HRESULT InitConstantBuffer();
 
 public:
 	FBX();
