@@ -7,7 +7,7 @@
 //#include "Dice.h"
 //#include"Sprite.h"
 #include"Transform.h"
-
+#include"FBX.h"
 
 //リンカ
 #pragma comment(lib, "d3d11.lib")
@@ -77,6 +77,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//Camera::Initialize({5,10,-10}, {0,0,0});
 	Camera::Initialize();
 
+	FBX fbx;
+	fbx.Load("Assets\\Oden.fbx");
+
+
 	Quad* q = new Quad();
 
 	/*Dice* d;
@@ -116,39 +120,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			//ゲームの処理
 			Direct3D::BeginDraw();
-			//XMMATRIX mat = XMMatrixIdentity();//xy 1/2
-			//XMMATRIX mat = XMMatrixScaling(1 / 2.0f, 1 / 2.0f, 1.0f);//スケール変換
 			
-			Transform trs;
-			/*trs.rotate_.z = 45;
-			trs.position_.x = trs.position_.x + 0.1f;*/
-			
-		q->Draw(trs);
-
-			//pSprite->Draw(trs);
-
-			//pSprite->Draw(mat);
-
-			/*static float rot = 0;
-			rot += 0.001;*/
-			////radian -> digree XMConvertToRadians
-			////digree -> radian XMConvertToDegrees
-
-			//XMMATRIX rmat = XMMatrixRotationX(rot);
-
-			//static float factor = 0.0;
-			//factor += 0.001;
-			//////float scale = 1.5 + sin(factor);
-			//////XMMATRIX smat = XMMatrixScaling(scale, scale, scale);
-			////////ここに自前の描画処理を追加
-			//////XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 0, 0);
-			//XMMATRIX tmat = XMMatrixTranslation(3.0 * cos(factor), 3.0 * sin(factor), 0);
-			////XMMATRIX mat = smat * rmat * tmat;
-			////単位行列は、数字の１と同じ
-			//XMMATRIX mat = XMMatrixIdentity();//Identityは単位行列って意味
-			//mat = rmat;
-			////q->Draw(mat);
-			//d->Draw(mat);
+		
 
 			//描画処理
 			Direct3D::EndDraw();

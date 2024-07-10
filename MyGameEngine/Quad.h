@@ -14,7 +14,6 @@ struct CONSTANT_BUFFER
 	XMMATRIX	matW;
 };
 
-//XMFLOAT3でもよい。
 //頂点情報
 struct VERTEX
 {
