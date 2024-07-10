@@ -81,11 +81,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	fbx.Load("Assets\\Oden.fbx");
 
 
-	Quad* q = new Quad();
+	
 
 	/*Dice* d;
 	d = new Dice();*/
 
+	Quad* q = new Quad();
 	hr = q->Initialize();
 	//hr = d->Initialize();
 	 

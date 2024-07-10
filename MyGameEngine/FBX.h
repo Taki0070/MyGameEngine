@@ -38,6 +38,11 @@ class FBX
 	int vertexCount_;	//’¸“_”
 	int polygonCount_;	//ƒ|ƒŠƒSƒ“”
 
+
+	void InitVertex(fbxsdk::FbxMesh* mesh);
+	void InitIndex(fbxsdk::FbxMesh* mesh);
+	void InitConstantBuffer();
+
 public:
 	FBX();
 	HRESULT Load(std::string fileName);
