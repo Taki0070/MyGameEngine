@@ -1,12 +1,13 @@
 #include "FBX.h"
+#include "Camera.h"
 
-
-
-FBX::FBX():pVertexBuffer_(nullptr),pIndexBuffer_(nullptr),pConstantBuffer_(nullptr),
-           vertexCount_(-1),polygonCount_(-1)
+FBX::FBX()
+	:pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),
+	vertexCount_(-1), polygonCount_(-1)
 {
 }
 
+//ロードしていろいろ初期化
 HRESULT FBX::Load(std::string fileName)
 {
 	//マネージャを生成
@@ -40,32 +41,8 @@ HRESULT FBX::Load(std::string fileName)
 	return S_OK;
 }
 
-//void FBX::InitVertex(fbxsdk::FbxMesh* mesh)
-//{
-//	//頂点情報を入れる配列
-//	//VERTEX* vertices = new VERTEX[vertexCount_];
-//	std::vector<VERTEX> vertices(vertexCount_);
-//	//全ポリゴン
-//	for (DWORD poly = 0; poly < polygonCount_; poly++)
-//	{
-//		//3頂点分
-//		for (int vertex = 0; vertex < 3; vertex++)
-//		{
-//			//調べる頂点の番号
-//			int index = mesh->GetPolygonVertex(poly, vertex);
-//
-//			//頂点の位置
-//			FbxVector4 pos = mesh->GetControlPointAt(index);
-//			vertices[index].position = XMVectorSet((float)pos[0], (float)pos[1], (float)pos[2], 0.0f);
-//		}
-//	}
-//	//頂点バッファ作成
-//
-//
-//
-//}
 
-HRESULT FBX::InitVertex(fbxsdk::FbxMesh* mesh)
+void FBX::InitVertex(fbxsdk::FbxMesh* mesh)
 {
 	//頂点情報を入れる配列
 	//VERTEX* vertices = new VERTEX[vertexCount_];
@@ -84,12 +61,12 @@ HRESULT FBX::InitVertex(fbxsdk::FbxMesh* mesh)
 			vertices[index].position = XMVectorSet((float)pos[0], (float)pos[1], (float)pos[2], 0.0f);
 		}
 	}
-	//頂点バッファ作成
-
+	// 頂点バッファ作成
+	//（自分でやって）
+	//頂点バッファ
 	HRESULT hr;
-	// 頂点データ用バッファの設定
 	D3D11_BUFFER_DESC bd_vertex;
-	bd_vertex.ByteWidth = sizeof(VERTEX);//sizeof(vertices);
+	bd_vertex.ByteWidth = sizeof(VERTEX) * vertexCount_;
 	bd_vertex.Usage = D3D11_USAGE_DEFAULT;
 	bd_vertex.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd_vertex.CPUAccessFlags = 0;
@@ -98,22 +75,13 @@ HRESULT FBX::InitVertex(fbxsdk::FbxMesh* mesh)
 	D3D11_SUBRESOURCE_DATA data_vertex;
 	data_vertex.pSysMem = vertices.data();
 	hr = Direct3D::pDevice->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_);
-	//hr = E_FAIL;
 	if (FAILED(hr))
 	{
-		//int MessageBox(
-		//	[in, optional] HWND    hWnd,
-		//	[in, optional] LPCTSTR lpText,
-		//	[in, optional] LPCTSTR lpCaption,
-		//	[in]           UINT    uType
-		//);
-		MessageBox(NULL, L"頂点バッファの作成に失敗", NULL, MB_OK);
-		return hr;
+		MessageBox(NULL, L"頂点バッファの作成に失敗しました", L"エラー", MB_OK);
 	}
-
 }
 
-HRESULT FBX::InitIndex(fbxsdk::FbxMesh* mesh)
+void FBX::InitIndex(fbxsdk::FbxMesh* mesh)
 {
 	//int* index = new int[polygonCount_ * 3];
 	std::vector<int> index(polygonCount_ * 3);
@@ -129,37 +97,33 @@ HRESULT FBX::InitIndex(fbxsdk::FbxMesh* mesh)
 			count++;
 		}
 	}
-	//データサイズだけ気を付ける
 
-	HRESULT hr;
-	// インデックスバッファを生成する
+	//自力でどうぞ
+	//	（ここもデータサイズを指定するところだけ注意）
 	D3D11_BUFFER_DESC   bd;
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(index);
+	bd.ByteWidth = sizeof(int) * polygonCount_ * 3;
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
-
-
 
 	D3D11_SUBRESOURCE_DATA InitData;
 	InitData.pSysMem = index.data();
 	InitData.SysMemPitch = 0;
 	InitData.SysMemSlicePitch = 0;
+
+	HRESULT hr;
 	hr = Direct3D::pDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer_);
 	if (FAILED(hr))
 	{
-		MessageBox(NULL, L"インデックスバッファの作成に失敗", NULL, MB_OK);
-		return hr;
+		MessageBox(NULL, L"インデックスバッファの作成に失敗しました", L"エラー", MB_OK);
 	}
-
 
 }
 
-HRESULT FBX::InitConstantBuffer()
+void FBX::InitConstantBuffer()
 {
-	HRESULT hr;
-	//コンスタントバッファ作成
+	//Quadと一緒
 	D3D11_BUFFER_DESC cb;
 	cb.ByteWidth = sizeof(CONSTANT_BUFFER);
 	cb.Usage = D3D11_USAGE_DYNAMIC;
@@ -169,19 +133,49 @@ HRESULT FBX::InitConstantBuffer()
 	cb.StructureByteStride = 0;
 
 	// コンスタントバッファの作成
+	HRESULT hr;
 	hr = Direct3D::pDevice->CreateBuffer(&cb, nullptr, &pConstantBuffer_);
 	if (FAILED(hr))
 	{
-		MessageBox(NULL, L"コンスタントバッファの作成に失敗", NULL, MB_OK);
-		return hr;
+		MessageBox(NULL, L"コンスタントバッファの作成に失敗しました", L"エラー", MB_OK);
 	}
-	return S_OK;
 }
+
+
 
 void FBX::Draw(Transform& transform)
 {
 	//Quadをアレンジ
-	Direct3D::pContext->DrawIndexed(index_.size(), 0, 0);
+	Direct3D::SetShader(SHADER_3D);
+	transform.Calculation();
+
+	CONSTANT_BUFFER cb;
+	cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
+	cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
+
+	D3D11_MAPPED_SUBRESOURCE pdata;
+	Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
+	memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
+
+	Direct3D::pContext->Unmap(pConstantBuffer_, 0);	//再開
+
+	//頂点バッファ、インデックスバッファ、コンスタントバッファをパイプラインにセット
+	//頂点バッファ
+	UINT stride = sizeof(VERTEX);
+	UINT offset = 0;
+	Direct3D::pContext->IASetVertexBuffers(0, 1, &pVertexBuffer_, &stride, &offset);
+
+	// インデックスバッファーをセット
+	stride = sizeof(int);
+	offset = 0;
+	Direct3D::pContext->IASetIndexBuffer(pIndexBuffer_, DXGI_FORMAT_R32_UINT, 0);
+
+	//コンスタントバッファ
+	Direct3D::pContext->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
+	Direct3D::pContext->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
+
+	//描画
+	Direct3D::pContext->DrawIndexed(polygonCount_ * 3, 0, 0);
 }
 
 void FBX::Release()

@@ -77,17 +77,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//Camera::Initialize({5,10,-10}, {0,0,0});
 	Camera::Initialize();
 
-	FBX fbx;
+	FBX fbx ;
 	fbx.Load("Assets\\Oden.fbx");
-
-
-	
+	//fbx.Release();
 
 	/*Dice* d;
 	d = new Dice();*/
 
-	Quad* q = new Quad();
-	hr = q->Initialize();
+	/*Quad* q = new Quad();
+	hr = q->Initialize();*/
+
 	//hr = d->Initialize();
 	 
 	/*std::string textureDate("Asserts\\dice.png");
@@ -121,8 +120,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			//ƒQ[ƒ€‚Ìˆ—
 			Direct3D::BeginDraw();
-			
-			fbx.Draw();
+			Transform trs;
+			fbx.Draw(trs);
 		
 
 			//•`‰æˆ—
