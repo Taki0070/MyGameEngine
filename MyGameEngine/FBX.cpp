@@ -30,11 +30,12 @@ HRESULT FBX::Load(std::string fileName)
 	//各情報の個数を取得
 	vertexCount_ = mesh->GetControlPointsCount();	//頂点の数
 	polygonCount_ = mesh->GetPolygonCount();	//ポリゴンの数
+	materialCount_ = pNode->GetMaterialCount();
 
 	InitVertex(mesh);
 	InitIndex(mesh);
 	InitConstantBuffer();
-
+	InitMaterial(pNode);
 
 	//マネージャ解放
 	pFbxManager->Destroy();
@@ -138,6 +139,44 @@ void FBX::InitConstantBuffer()
 	if (FAILED(hr))
 	{
 		MessageBox(NULL, L"コンスタントバッファの作成に失敗しました", L"エラー", MB_OK);
+	}
+}
+
+void FBX::InitMaterial(fbxsdk::FbxNode* pNode)
+{
+	pMaterialList_ =  std::vector<MATERIAL>(materialCount_);//個数分をとる
+
+	for (int i = 0; i < materialCount_; i++)
+	{
+		//i番目のマテリアル情報を取得
+		FbxSurfaceMaterial* pMaterial = pNode->GetMaterial(i);
+
+		//テクスチャ情報
+		FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
+
+		//テクスチャの数数
+		int fileTextureCount = lProperty.GetSrcObjectCount<FbxFileTexture>();	
+
+		//テクスチャあり
+		if (fileTextureCount>0)
+		{
+			FbxFileTexture* textureInfo = lProperty.GetSrcObject<FbxFileTexture>();
+			const char* textureFilePath = textureInfo->GetRelativeFileName();
+			 //ファイルがあるか確認
+			int k = 0;
+			k++;
+			//ファイル名だけに見える　
+			//FBXの同じ階層のやつを読み込む、
+
+		}
+
+		//テクスチャ無し
+		else
+		{
+
+		}
+
+
 	}
 }
 
