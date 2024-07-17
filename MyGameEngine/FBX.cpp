@@ -1,6 +1,11 @@
 #include "FBX.h"
 #include "Camera.h"
 #include<filesystem>
+#include<string>
+
+
+using std::string;
+
 
 namespace fs = std::filesystem;
 
@@ -36,10 +41,27 @@ HRESULT FBX::Load(std::string fileName)
 	polygonCount_ = mesh->GetPolygonCount();	//ポリゴンの数
 	materialCount_ = pNode->GetMaterialCount();
 
+	//現在のカレントディレクトリを覚えておく
+	fs::path cPath, basePath;// base保存
+	cPath = fs::current_path();
+	basePath = cPath;
+		
+	//引数のfileNameからディレクトリ部分を取得
+	string subDir("Assets");
+	fs::path subPath(cPath.string() + "\\" + subDir);
+	assert(fs::exists(subPath));
+
+	//カレントディレクトリ変更
+	fs::current_path(subPath);
+	
+
 	InitVertex(mesh);
 	InitIndex(mesh);
 	InitConstantBuffer();
 	InitMaterial(pNode);
+
+	//カレントディレクトリを元に戻す
+	fs::current_path(basePath);
 
 	//マネージャ解放
 	pFbxManager->Destroy();
@@ -152,24 +174,24 @@ void FBX::InitMaterial(fbxsdk::FbxNode* pNode)
 
 	for (int i = 0; i < materialCount_; i++)
 	{
+
 		//i番目のマテリアル情報を取得
 		FbxSurfaceMaterial* pMaterial = pNode->GetMaterial(i);
-
 		//テクスチャ情報
 		FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
-
 		//テクスチャの数数
 		int fileTextureCount = lProperty.GetSrcObjectCount<FbxFileTexture>();	
 
 		//テクスチャあり
 		if (fileTextureCount>0)
 		{
+			//Maya
 			FbxFileTexture* textureInfo = lProperty.GetSrcObject<FbxFileTexture>();
 			const char* textureFilePath = textureInfo->GetRelativeFileName();
 			 //ファイルがあるか確認
 			//int k = 0;
 			//k++;
-			fs::path texFile(string("Assets//")+string(textureFilePath));
+			fs::path texFile(textureFilePath);
 			if (fs::is_regular_file(texFile))// exists
 			{
 				pMaterialList_[i].pTexture = new Texture;
@@ -188,7 +210,7 @@ void FBX::InitMaterial(fbxsdk::FbxNode* pNode)
 		//テクスチャ無し
 		else
 		{
-
+			pMaterialList_[i].pTexture = nullptr;
 		}
 
 
