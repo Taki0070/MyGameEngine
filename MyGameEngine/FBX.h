@@ -31,7 +31,7 @@ class FBX
 	struct VERTEX
 	{
 		XMVECTOR position;
-		//XMVECTOR uv;
+		XMVECTOR uv;
 		//XMVECTOR normal; //ノーマル追加（法線ベクトル）
 	};
 
