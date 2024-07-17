@@ -1,5 +1,9 @@
 #include "FBX.h"
 #include "Camera.h"
+#include<filesystem>
+
+namespace fs = std::filesystem;
+
 
 FBX::FBX()
 	:pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),
@@ -163,8 +167,19 @@ void FBX::InitMaterial(fbxsdk::FbxNode* pNode)
 			FbxFileTexture* textureInfo = lProperty.GetSrcObject<FbxFileTexture>();
 			const char* textureFilePath = textureInfo->GetRelativeFileName();
 			 //ファイルがあるか確認
-			int k = 0;
-			k++;
+			//int k = 0;
+			//k++;
+			fs::path texFile(string("Assets//")+string(textureFilePath));
+			if (fs::is_regular_file(texFile))// exists
+			{
+				pMaterialList_[i].pTexture = new Texture;
+				pMaterialList_[i].pTexture->Load(texFile.string());		//  c_str はstringを返す
+			}
+			else
+			{
+
+			}
+	
 			//ファイル名だけに見える　
 			//FBXの同じ階層のやつを読み込む、
 
