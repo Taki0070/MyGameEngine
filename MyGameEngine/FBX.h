@@ -36,7 +36,7 @@ class FBX
 	};
 
 	ID3D11Buffer* pVertexBuffer_; //頂点バッファ用メモリ 
-	ID3D11Buffer* pIndexBuffer_; //インデックスバッファ用メモリ
+	ID3D11Buffer** pIndexBuffer_; //インデックスバッファ用メモリ  **配列か
 	ID3D11Buffer* pConstantBuffer_; //コンスタントバッファ用メモリ
 	std::vector<MATERIAL> pMaterialList_;
 	
