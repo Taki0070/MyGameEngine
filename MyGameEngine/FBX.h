@@ -39,7 +39,8 @@ class FBX
 	ID3D11Buffer** pIndexBuffer_; //インデックスバッファ用メモリ  **配列か
 	ID3D11Buffer* pConstantBuffer_; //コンスタントバッファ用メモリ
 	std::vector<MATERIAL> pMaterialList_;
-	
+	std::vector<int>indexCount_;
+
 	int vertexCount_;	//頂点数
 	int polygonCount_;	//ポリゴン数
 	int materialCount_;	//マテリアルの個数

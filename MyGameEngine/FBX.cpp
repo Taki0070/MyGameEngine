@@ -118,6 +118,7 @@ void FBX::InitIndex(fbxsdk::FbxMesh* mesh)
 {
 	pIndexBuffer_ =new ID3D11Buffer* [materialCount_]; //　マテリアル分作る
 	//int* index = new int[polygonCount_ * 3];
+	indexCount_ = std::vector<int>(materialCount_);
 	std::vector<int> index(polygonCount_ * 3);
 	
 	for (int i = 0; i < materialCount_; i++)
@@ -138,7 +139,7 @@ void FBX::InitIndex(fbxsdk::FbxMesh* mesh)
 				}
 			}
 		}
-
+		indexCount_[i] = count;
 		//ここもデータサイズを指定するところだけ注意
 		D3D11_BUFFER_DESC   bd;
 		bd.Usage = D3D11_USAGE_DEFAULT;
