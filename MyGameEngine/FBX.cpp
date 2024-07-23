@@ -267,7 +267,7 @@ void FBX::Draw(Transform& transform)
 		Direct3D::pContext->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
 		Direct3D::pContext->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
 
-		if (!(pMaterialList_[i].pTexture == nullptr)) {
+		if (!(pMaterialList_[i].pTexture == nullptr)) { //テクスチャ
 			//サンプラーとシェーダーリソースビューをシェーダにセット
 			ID3D11SamplerState* pSampler = pMaterialList_[i].pTexture->GetSampler();
 			Direct3D::pContext->PSSetSamplers(0, 1, &pSampler);
@@ -276,8 +276,10 @@ void FBX::Draw(Transform& transform)
 			Direct3D::pContext->PSSetShaderResources(0, 1, &pSRV);
 
 		}
+
 		//描画
-		Direct3D::pContext->DrawIndexed(polygonCount_ * 3, 0, 0);
+		Direct3D::pContext->DrawIndexed(indexCount_[i], 0, 0);
+		//Direct3D::pContext->DrawIndexed(polygonCount_ * 3, 0, 0);
 	}
 }
 

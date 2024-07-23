@@ -121,8 +121,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//ÉQÅ[ÉÄÇÃèàóù
 			Direct3D::BeginDraw();
 			Transform trs;
-			trs.scale_= { 5,5,5 };
-		
+			trs.scale_= { 15,15,15 };
+			trs.position_.y = -6;
 			fbx.Draw(trs);
 		
 
