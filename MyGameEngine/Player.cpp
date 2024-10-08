@@ -19,7 +19,7 @@ void Player::Initialize()
 	transform_.scale_ = { 8,8,8 };
 	transform_.position_ = { 0,-2.5,0 };
 	GameObject* pCo = Instantiate<ChildOden>(this);
-	pCo->SetPosition(2, 0, 1);
+	pCo->SetPosition(2, 0, -1);
 	GameObject* pCo2 = Instantiate<ChildOden>(this);
 	pCo2->SetPosition(-2, 0, -1);
 
@@ -28,6 +28,10 @@ void Player::Initialize()
 void Player::Update()
 {
 	transform_.rotate_.y += 1;
+	if (transform_.rotate_.y > 60 * 10)
+	{
+		KillMe();
+	}
 	//transform_.position_.x += 0.1;
 }
 

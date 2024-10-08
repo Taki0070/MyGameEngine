@@ -6,12 +6,12 @@ GameObject::GameObject()
 }
 
 GameObject::GameObject(GameObject* parent, const std::string& name)
-	:pParent_(parent), objectName_(name)
+	:pParent_(parent), objectName_(name),isDead_(false)
 {
-	//if (parent != nullptr)
-	//{
-	//	this->transform_.pParent_ = &(parent->transform_);//親のtransのアドレスをいれる 子に
-	//}//ここを付けるとおでんが回ってしまう
+	if (parent != nullptr)
+	{
+		this->transform_.pParent_ = &(parent->transform_);//親のtransのアドレスをいれる 子に
+	}//ここを付けるとおでんが回ってしまう
 }
 
 GameObject::~GameObject()
@@ -21,10 +21,25 @@ GameObject::~GameObject()
 void GameObject::UpdateSub()
 {
 	Update();
-	for (auto itr : childList_)//中にあるすべてを
+	for (auto itr = childList_.begin(); itr != childList_.end(); itr++)//中にあるすべてを
 	{
-		itr->UpdateSub();
+		(*itr)->UpdateSub();
 	}
+
+	for (auto itr = childList_.begin(); itr != childList_.end();) {
+		if ((*itr)->isDead_)
+		{
+			(*itr)->ReleaseSub();
+			//(*itr)->Release();
+			itr = childList_.erase(itr);//一個とばす
+	
+		}
+		else
+		{
+			itr++;
+		}
+	}
+
 }
 
 void GameObject::DrawSub()
@@ -44,4 +59,9 @@ void GameObject::ReleaseSub()
 	{
 		itr->ReleaseSub();
 	}
+}
+
+void GameObject::KillMe()
+{
+	isDead_ = true;
 }
