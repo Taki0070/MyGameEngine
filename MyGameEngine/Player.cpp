@@ -18,7 +18,11 @@ void Player::Initialize()
 	pOden->Load("Assets//Oden.fbx");
 	transform_.scale_ = { 8,8,8 };
 	transform_.position_ = { 0,-2.5,0 };
-	GameObject *pCo = Instantiate<ChildOden>(this);
+	GameObject* pCo = Instantiate<ChildOden>(this);
+	pCo->SetPosition(2, 0, 1);
+	GameObject* pCo2 = Instantiate<ChildOden>(this);
+	pCo2->SetPosition(-2, 0, -1);
+
 }
 
 void Player::Update()

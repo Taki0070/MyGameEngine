@@ -27,6 +27,7 @@ public:
 	void SetPosition(XMFLOAT3 position) {
 		transform_.position_ = position;
 	}
+	//ƒCƒ“ƒ‰ƒCƒ“’è‹`
 	void SetPosition(float x, float y, float z) {
 		SetPosition(XMFLOAT3(x, y, z));
 	}

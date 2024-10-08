@@ -11,7 +11,7 @@ GameObject::GameObject(GameObject* parent, const std::string& name)
 	//if (parent != nullptr)
 	//{
 	//	this->transform_.pParent_ = &(parent->transform_);//親のtransのアドレスをいれる 子に
-	//}
+	//}//ここを付けるとおでんが回ってしまう
 }
 
 GameObject::~GameObject()

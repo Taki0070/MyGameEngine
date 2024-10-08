@@ -15,13 +15,13 @@ void ChildOden::Initialize()
 {
 	pFbx = new FBX;
 	pFbx->Load("Assets//Oden.fbx");
-	transform_.scale_ = { 1.5f,1.5f,1.5f };
-	/*transform_.scale_.x = 2.5f;
+	transform_.scale_ = { 0.8,0.8f,0.8f };
+	/*transform_.scale_.x = 2.5f
 	transform_.scale_.y = 2.5f;
 	transform_.scale_.z = 2.5f;*/
 	
 
-	transform_.position_ = { 5,-0.5,0 };//-2.5
+	transform_.position_ = { 4,-2.5,0 };//-2.5
 }
 
 void ChildOden::Update()
