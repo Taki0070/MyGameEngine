@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "Direct3D.h"
 
 GameObject::GameObject()
 	:pParent_(nullptr)
@@ -31,6 +32,7 @@ void GameObject::UpdateSub()
 		{
 			(*itr)->ReleaseSub();
 			//(*itr)->Release();
+			SAFE_DELETE(*itr);
 			itr = childList_.erase(itr);//ˆêŒÂ‚Æ‚Î‚·
 	
 		}
