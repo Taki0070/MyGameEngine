@@ -24,6 +24,14 @@ public:
 	void DrawSub();
 	void ReleaseSub();
 
+	void SetPosition(XMFLOAT3 position) {
+		transform_.position_ = position;
+	}
+	void SetPosition(float x, float y, float z) {
+		SetPosition(XMFLOAT3(x, y, z));
+	}
+
+
 	template <class T>
 	T* Instantiate(GameObject* pParent)
 	{

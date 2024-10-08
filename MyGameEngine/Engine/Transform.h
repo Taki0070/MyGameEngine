@@ -13,6 +13,7 @@ public:
 	XMFLOAT3 position_;	//位置
 	XMFLOAT3 rotate_;	//向き
 	XMFLOAT3 scale_;	//拡大率
+	Transform* pParent_;
 
 	//コンストラクタ
 	Transform();

@@ -8,6 +8,10 @@ GameObject::GameObject()
 GameObject::GameObject(GameObject* parent, const std::string& name)
 	:pParent_(parent), objectName_(name)
 {
+	//if (parent != nullptr)
+	//{
+	//	this->transform_.pParent_ = &(parent->transform_);//親のtransのアドレスをいれる 子に
+	//}
 }
 
 GameObject::~GameObject()
