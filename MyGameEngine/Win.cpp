@@ -1,23 +1,26 @@
 //インクルード
+//#define _CRT_SECURE_NO_WARNINGS
 #include <Windows.h>
-#include "Direct3D.h"
+#include<cstdlib>
+#include "Engine/Direct3D.h"
+#include "Engine/Camera.h"
 
-#include "Quad.h"
-#include "Camera.h"
-//#include "Dice.h"
-//#include"Sprite.h"
-#include"Transform.h"
-#include"FBX.h"
+#include"Engine/Transform.h"
+#include"RootJob.h"
+
 
 //リンカ
 #pragma comment(lib, "d3d11.lib")
-
+#pragma comment(lib, "winmm.lib")
 
 	//定数宣言
 const wchar_t* WIN_CLASS_NAME = L"SampleGame";  //ウィンドウクラス名
 const wchar_t* APP_NAME = L"サンプル"; //アプリケーション名
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
+
+RootJob* pRootJob = nullptr;//ループ
+
 
 //プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -77,22 +80,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//Camera::Initialize({5,10,-10}, {0,0,0});
 	Camera::Initialize();
 
-	FBX fbx ;
-	fbx.Load("Assets\\Oden.fbx");
+	pRootJob = new RootJob;
+	pRootJob->Initialize();
+
+	/*FBX fbx;
+	fbx.Load("Assets\\Oden.fbx");*/
 	//fbx.Release();
 
-	/*Dice* d;
-	d = new Dice();*/
-
-	/*Quad* q = new Quad();
-	hr = q->Initialize();*/
-
-	//hr = d->Initialize();
-	 
-	/*std::string textureDate("Asserts\\dice.png");
-	Sprite* pSprite;
-	pSprite = new Sprite();
-	hr = pSprite->Load(textureDate);*/
 
 	if (FAILED(hr))
 	{
@@ -115,16 +109,49 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		//メッセージなし
 		else
 		{
+			//一回だけ初期化されてあとは、消えない static
+			timeBeginPeriod(1);
+			static DWORD startTime = timeGetTime();
+			DWORD nowTime = timeGetTime();
+			timeEndPeriod(1);//時間精度が上がる
+
+			static DWORD lastUpdateTime = nowTime;
+			static DWORD countFps = 0; //DWORD (unsigned) 同
+
+			if (nowTime - startTime >= 1000)//1000ミリ秒は一秒
+			{
+				std::wstring str;
+				wsprintf(str.data(), L"%u", countFps);
+				SetWindowTextW(hWnd, str.c_str());
+
+				countFps = 0;
+				startTime = nowTime;
+			}
+					
+			if (nowTime - lastUpdateTime <= 1000.0f / 60.0f)
+			{
+				continue; //1/60秒たっていないのでスルー
+			}
+			//1/60秒以上たっていたので更新　＝　更新時間を今の時間に更新
+			lastUpdateTime = nowTime;
+			countFps++;
+			
+			//std::wstring str;
+			////wsprintf(str.data(), L"%u", nowTime - startTime);
+			//countFps++;
+			//wsprintf(str.data(), L"%u", countFps);
+			//SetWindowTextW(hWnd, str.c_str());
+
 			//カメラを更新
 			Camera::Update();
+			pRootJob->UpdateSub();
 
 			//ゲームの処理
 			Direct3D::BeginDraw();
-			Transform trs;
-			trs.scale_= { 15,15,15 };
-			trs.position_.y = -6;
-			fbx.Draw(trs);
 		
+			//ルートにつながるすべてのオブジェクトをDrawする
+			pRootJob->DrawSub();
+
 
 			//描画処理
 			Direct3D::EndDraw();
@@ -133,6 +160,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	}
 
 	//SAFE_DELETE(q);
+	pRootJob->ReleaseSub();
 	Direct3D::Release();
 
 	return 0;
