@@ -33,7 +33,7 @@ XMMATRIX Transform::GetWorldMatrix()
 {
     if (pParent_ != nullptr)
     {
-        return matScale_ * matRotate_ * matTranslate_ * pParent_->GetWorldMatrix() ;// DirectX11 では S→R→T (スケール、ローテ、トランス)
+        return matScale_ * matRotate_ * matTranslate_ ;// DirectX11 では S→R→T (スケール、ローテ、トランス)
 
     }
     else {//親がいないときは

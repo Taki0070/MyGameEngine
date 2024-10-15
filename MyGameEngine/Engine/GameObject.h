@@ -6,6 +6,7 @@
 class GameObject
 {
 	bool isDead_;//ê∂Ç´éÄ
+	
 protected:
 	std::list<GameObject*> childList_;
 	Transform  transform_;
@@ -35,6 +36,13 @@ public:
 	void SetPosition(float x, float y, float z) {
 		SetPosition(XMFLOAT3(x, y, z));
 	}
+
+	void SetScale(float sx, float sy, float sz) {
+		transform_.scale_ = { sx,sy,sz };
+	}
+	void SetRotateX(float xrotate) { transform_.position_.x = xrotate; };
+	void SetRotateY(float yrotate) { transform_.position_.y = yrotate; };
+	void SetRotateZ(float zrotate) { transform_.position_.z = zrotate; };
 
 
 	template <class T>

@@ -7,7 +7,9 @@
 
 #include"Engine/Transform.h"
 #include"RootJob.h"
-
+#include"Player.h"
+#include"Engine/Input.h"
+#include"Model.h"
 
 //リンカ
 #pragma comment(lib, "d3d11.lib")
@@ -75,13 +77,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		MessageBox(NULL, L"DirectXの初期化に失敗", NULL, MB_OK);
 		return 0;
 	}
-
+	Input::Initialize(hWnd);
 
 	//Camera::Initialize({5,10,-10}, {0,0,0});
 	Camera::Initialize();
 
 	pRootJob = new RootJob;
 	pRootJob->Initialize();
+
+	Player* pPl = new Player(pRootJob); // ここで親オブジェクトを渡す
+	pPl->Initialize();
 
 	/*FBX fbx;
 	fbx.Load("Assets\\Oden.fbx");*/
@@ -142,9 +147,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//wsprintf(str.data(), L"%u", countFps);
 			//SetWindowTextW(hWnd, str.c_str());
 
+			//
 			//カメラを更新
 			Camera::Update();
+			Input::Update();
 			pRootJob->UpdateSub();
+			
+
 
 			//ゲームの処理
 			Direct3D::BeginDraw();
@@ -160,9 +169,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	}
 
 	//SAFE_DELETE(q);
+	Model::Release();
 	pRootJob->ReleaseSub();
 	Direct3D::Release();
-
+	Input::Release();
 	return 0;
 }
 

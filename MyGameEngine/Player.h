@@ -7,7 +7,8 @@ class FBX;//‘O•ûéŒ¾
 class Player :
     public GameObject
 {
-    FBX* pOden;//
+    int hModel;
+    //FBX* pOden;//
 public:
     Player(GameObject* parent);
     ~Player();
@@ -16,5 +17,6 @@ public:
     void Update() override;
     void Draw() override;
     void Release() override;
+    void SetPosition(float x, float y);
 };
 
