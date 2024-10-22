@@ -21,10 +21,7 @@ class ChildOden :
         void Update() override;
         void Draw() override;
         void Release() override;
-        void SetPosition(float x, float y) {
-            transform_.position_.x = x;
-            transform_.position_, y = y;
-        }
+        void SetPosition(float x, float y,float z);
 
 };
 

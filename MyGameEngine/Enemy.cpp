@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include"Model.h"
+
 Enemy::Enemy(GameObject* parent)
 	:GameObject(parent,"Enemy"),hModel(-1)
 {
@@ -18,7 +19,10 @@ void Enemy::Initialize()
 
 void Enemy::Update()
 {
-	
+	static int dt;
+	dt++;
+	float nTime = dt / (10.0f * 10.0f) - 2.0f;
+	transform_.position_.x = 4.0f * sin(nTime);
 }
 
 void Enemy::Draw()

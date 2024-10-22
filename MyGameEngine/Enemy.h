@@ -13,6 +13,7 @@ public:
     void Update() override;
     void Draw() override;
     void Release() override;
+    XMFLOAT3 GetPosition() { return (transform_.position_); }
     void SetPosition(float x, float y);
 };
 
