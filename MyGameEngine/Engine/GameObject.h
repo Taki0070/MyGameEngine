@@ -3,6 +3,7 @@
 #include <string>
 #include"Transform.h"
 
+using std::string;
 class GameObject
 {
 	bool isDead_;//生き死
@@ -11,7 +12,7 @@ protected:
 	std::list<GameObject*> childList_;
 	Transform  transform_;
 	GameObject* pParent_;
-	std::string	objectName_;
+	string	objectName_;//オブジェクトの名前
 
 public:
 	GameObject();
@@ -43,6 +44,10 @@ public:
 	void SetRotateX(float xrotate) { transform_.position_.x = xrotate; };
 	void SetRotateY(float yrotate) { transform_.position_.y = yrotate; };
 	void SetRotateZ(float zrotate) { transform_.position_.z = zrotate; };
+
+	GameObject* FindObject(string objName);
+	GameObject* GetRootJob();
+	GameObject* FindChildObject(string objName);
 
 
 	template <class T>

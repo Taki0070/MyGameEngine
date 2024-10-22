@@ -17,20 +17,22 @@ void ChildOden::Initialize()
 	/*pFbx = new FBX;
 	pFbx->Load("Assets//Oden.fbx");*/
 	hModel = Model::Load("Assets\\Oden.fbx");
-	transform_.scale_ = { 0.8,0.8f,0.8f };
+	//transform_.scale_ = { 0.8,0.8f,0.8f };
 
 	/*transform_.scale_.x = 2.5f
 	transform_.scale_.y = 2.5f;
 	transform_.scale_.z = 2.5f;*/
 	
-
-	transform_.position_ = { 4,-2.5,0 };//-2.5
+	this->transform_.position_.x = 0;
+	this->transform_.position_.y = -2.5;
+	this->transform_.position_.z = 0;
+	//transform_.position_ = { 4,-2.5,0 };//-2.5
 }
 
 void ChildOden::Update()
 {
 	transform_.position_.y += 0.1;
-	if (transform_.position_.y > 15.0)
+	if (transform_.position_.y > 10.0)
 	{
 		KillMe();
 	}

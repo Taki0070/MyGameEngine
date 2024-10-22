@@ -82,11 +82,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//Camera::Initialize({5,10,-10}, {0,0,0});
 	Camera::Initialize();
 
-	pRootJob = new RootJob;
+	pRootJob = new RootJob(nullptr);
 	pRootJob->Initialize();
 
-	Player* pPl = new Player(pRootJob); // ここで親オブジェクトを渡す
-	pPl->Initialize();
+	//Player* pPl = new Player(pRootJob); // ここで親オブジェクトを渡す
+	//pPl->Initialize();
 
 	/*FBX fbx;
 	fbx.Load("Assets\\Oden.fbx");*/

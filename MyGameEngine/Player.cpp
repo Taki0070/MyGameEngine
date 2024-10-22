@@ -54,7 +54,7 @@ void Player::Update()
 	{
 		GameObject *p = Instantiate<ChildOden>(this);
 		p->SetPosition(transform_.position_);
-		p->SetScale(10.2, 1.2, 0.2);
+		p->SetScale(0.2, 0.2, 0.2);
 	}
 	
 
