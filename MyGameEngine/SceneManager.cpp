@@ -30,7 +30,9 @@ void SceneManager::Update()
         (*scene)->ReleaseSub();
         SAFE_DELETE(*scene);
         childList_.clear();
-        //for (auto itr : childList_)
+        Model::Release();
+
+        //for (auto itr : childList_)　ダメ
         //{
         //    itr->ReleaseSub(); //　実態を消す
         //    SAFE_DELETE(itr);//　
@@ -38,11 +40,7 @@ void SceneManager::Update()
         //}
           
         //ロードしたデータを全削除
-        Model::Release();
-
-
-
-        
+                
         //次のシーンを作成
         switch (nextSceneID_)
         {

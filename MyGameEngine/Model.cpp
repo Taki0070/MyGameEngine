@@ -11,6 +11,8 @@ namespace Model
 int Model::Load(std::string filename)
 {
 	ModelData* pData = new ModelData;//Á‚¦‚Ä‚à‚µ‚­‚È‚¢‚à‚Ì‚ğ new ‚·‚é@A‚ ‚Æ‚Å©•ª‚ÅÁ‚³‚È‚¯‚ê‚Î‚È‚ç‚Ê
+	pData->filename_ = filename;
+	pData->pFbx_ = nullptr;//“Ç‚İ‚İ‰ğÁ
 
 	for (auto& e : modelList)//
 	{

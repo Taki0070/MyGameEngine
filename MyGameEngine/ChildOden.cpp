@@ -32,7 +32,7 @@ void ChildOden::Initialize()
 void ChildOden::Update()
 {
 	transform_.position_.y += 0.1;
-	if (transform_.position_.y > 10.0)
+	if (transform_.position_.y > 5.0)
 	{
 		KillMe();
 	}
