@@ -11,7 +11,7 @@ class ChildOden :
 {   
     Transform transform_;
     int hModel;
-    FBX* pFbx;
+ //   FBX* pFbx;
     
     public:
         ChildOden(GameObject* parent);
@@ -21,7 +21,9 @@ class ChildOden :
         void Update() override;
         void Draw() override;
         void Release() override;
-        void SetPosition(float x, float y,float z);
+
+        void OnCollision(GameObject* pTarget) override;//ゲームオブジェクト
+ //       void SetPosition(float x, float y,float z);
 
 };
 
