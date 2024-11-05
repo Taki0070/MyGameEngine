@@ -129,7 +129,6 @@ void GameObject::Collision(GameObject* pTarget)
 		OnCollision(pTarget);		
 	}
 	
-	
 }
 
 void GameObject::RoundRobin(GameObject* pTarget)
@@ -145,4 +144,5 @@ void GameObject::RoundRobin(GameObject* pTarget)
 	{
 		RoundRobin(itr);
 	}
+	
 }

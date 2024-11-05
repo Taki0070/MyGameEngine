@@ -23,7 +23,8 @@ class ChildOden :
         void Release() override;
 
         void OnCollision(GameObject* pTarget) override;//ゲームオブジェクト
- //       void SetPosition(float x, float y,float z);
+        
+       
 
 };
 

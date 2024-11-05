@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include"TestScene.h"
 #include"PlayScene.h"
+#include"OverScene.h"
 #include"Engine/Direct3D.h"
 #include"Model.h"
 
@@ -46,6 +47,7 @@ void SceneManager::Update()
         {
         case SCENE_ID_TEST: Instantiate<TestScene>(this); break;
         case SCENE_ID_PLAY: Instantiate<PlayScene>(this); break;
+        case SCENE_ID_OVER: Instantiate<OverScene>(this); break;
         }
         //無事シーンができたら、カレントシーンを更新
         currentSceneID_ = nextSceneID_;

@@ -1,13 +1,12 @@
 #pragma once
 #include"Engine/GameObject.h"
-
-class TestScene
-	:public GameObject
+class OverScene
+    :public GameObject
 {
     int hModel_;
 public:
-    TestScene(GameObject* parent);
-    ~TestScene();
+    OverScene(GameObject* parent);
+    ~OverScene();
 
     void Initialize() override;
     void Update() override;
@@ -17,4 +16,5 @@ public:
 
 
 };
+
 
